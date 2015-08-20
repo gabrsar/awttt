@@ -1,14 +1,24 @@
 package model
 
-import play.api.libs.json.Json
+import play.api.Logger
+import play.api.libs.json.{JsObject, Json}
 
-class GameEngine() {
+class GameEngine(
+                  val board: Array[Array[String]] = Array.tabulate(3, 3)((x, y) => GameEngine.empty),
+                  var currentPlayer: String = GameEngine.player1,
+                  var round: Int = 1) {
 
-  var board = Array.tabulate(3, 3)((x, y) => GameEngine.empty)
-  var currentPlayer = GameEngine.player1
-  var round = 1
+  Logger.info("Creating new GameEngine")
 
-  def getCurrentGameStatus = {
+  def this(json: JsObject) {
+    this(
+      (json \ "board").as[Array[Array[String]]],
+      (json \ "currentPlayer").as[String],
+      (json \ "round").as[Int]
+    )
+  }
+
+  def state = {
     Json.obj(
       "board" -> board,
       "currentPlayer" -> currentPlayer,
@@ -20,11 +30,8 @@ class GameEngine() {
   def executeMovement(row: Integer, col: Integer): Boolean = {
     println(row, col)
     if (isEmpty(row, col)) {
-      println("empty!")
       board(row)(col) = currentPlayer
-      println("nextRound!")
       nextRound()
-      println("nextRound!")
       true
     } else {
       false
@@ -43,8 +50,12 @@ class GameEngine() {
 
   }
 
+  def draw(): String = {
+    Json.toJson(board).toString()
+  }
+
   def isEmpty(row: Integer, col: Integer): Boolean = {
-    if (isValidMovement(row, col)) {
+    if (GameEngine.isValidMovement(row, col)) {
       board(row)(col) == GameEngine.empty
     } else {
       false
@@ -63,7 +74,6 @@ class GameEngine() {
       lazy val rowWinner = hasRowWinner(0) || hasRowWinner(1) || hasRowWinner(2)
       lazy val colWinner = hasColWinner(0) || hasColWinner(1) || hasColWinner(2)
       lazy val diagonalWinner = hasPriDiagonalWinner || hasSecDiagonalWinner
-
 
       if (round < GameEngine.minRoundsToSomeoneWin) {
         GameEngine.continue
@@ -89,11 +99,8 @@ class GameEngine() {
     } else {
       player1 // Nobody wins, but player1 contains flag continue or draw
     }
-
   }
 
-  def isValidMovement(row: Integer, col: Integer) =
-    (row >= 0 && row < 3) && (col >= 0 && col < 3)
 
 }
 
@@ -107,6 +114,23 @@ object GameEngine {
   val maxRounds = 9
   val minRoundsToSomeoneWin = 5
   val continue = "#"
+
+  def isValidMovement(row: Integer, col: Integer) =
+    (row >= 0 && row < 3) && (col >= 0 && col < 3)
+
+  def fromJson(json: JsObject): GameEngine = {
+    new GameEngine(
+      (json \ "board").as[Array[Array[String]]],
+      (json \ "currentPlayer").as[String],
+      (json \ "round").as[Int]
+    )
+  }
+
+  object MovimentStatus {
+    val DONE = 0
+    val NOT_EMPTY = 1
+    val INVALID = 2
+  }
 
 
 }
