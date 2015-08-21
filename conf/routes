@@ -3,10 +3,12 @@
 # ~~~~
 
 # Home page
-GET     /                                       controllers.Game.index
-GET     /new/:password                          controllers.Game.start(password:String)
-GET     /join/:id/:password                     controllers.Game.join(id:Long, password:String)
-GET     /draw/:id/:password                     controllers.Game.draw(id:Long, password:String)
+GET     /                                           controllers.Game.index
+GET     /start/:password                            controllers.Game.start(password:String)
+GET     /join/:id/:password                         controllers.Game.join(id:Long, password:String)
+GET     /draw/:id/:password                         controllers.Game.draw(id:Long, password:String)
+GET     /move/:id/:password/:playerSecret/:x/:y     controllers.Game.move(id:Long, password:String, playerSecret:String, x:Int, y:Int)
+
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.at(path="/public", file)

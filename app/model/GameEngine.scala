@@ -1,14 +1,11 @@
 package model
 
-import play.api.Logger
 import play.api.libs.json.{JsObject, Json}
 
 class GameEngine(
                   val board: Array[Array[String]] = Array.tabulate(3, 3)((x, y) => GameEngine.empty),
                   var currentPlayer: String = GameEngine.player1,
                   var round: Int = 1) {
-
-  Logger.info("Creating new GameEngine")
 
   def this(json: JsObject) {
     this(

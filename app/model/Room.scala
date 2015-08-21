@@ -7,7 +7,7 @@ import org.joda.time.DateTime
 import play.api.Logger
 import play.api.libs.json.{JsObject, Json}
 
-import scalax.io.{Codec, Input, Resource, Output}
+import scalax.io._
 
 class Room(
             val id: Long = Room.nextId(),
@@ -19,6 +19,17 @@ class Room(
             ) {
 
   Logger.info(s"Creating new Room #$id")
+
+  def validatePlayerTurn(playerKey: String): Boolean = {
+
+    val turnKey = if (game.currentPlayer == GameEngine.player1) player1 else player2
+
+    if (playerKey == turnKey) {
+      true
+    } else {
+      false
+    }
+  }
 
   def this(json: JsObject) {
     this(
@@ -42,11 +53,14 @@ class Room(
   }
 
   def save() = {
-    val gameFile: Output = Resource.fromFile(s"${
-      Room.storePath
-    }$id.game")
-    gameFile.write(toJson.toString())
+    val gameState = this.toJson.toString()
 
+    Logger.info(s"Saving room state='$gameState'")
+
+    val uuid = s"${Room.storePath}$id.game"
+    val gameFile: Seekable = Resource.fromFile(uuid)
+    gameFile.truncate(0)
+    gameFile.write(gameState)
   }
 
   def validatePassword(idParam: Long, passwordParam: String) = {
@@ -67,13 +81,18 @@ object Room {
     try {
       val room = new Room(Json.parse(roomString).as[JsObject])
       if (room.validatePassword(id, password)) {
+        Logger.info(s"Game loaded: id=$id, password=$password")
         Some(room)
       } else {
+        Logger.info(s"Cannot load game: invalid credentials id=$id, password=$password")
         None
       }
     } catch {
-      case e: JsonMappingException => None
+      case e: JsonMappingException =>
+        Logger.info(s"Cannot load game: id=$id, password=$password, exception=$e")
+        None
     }
+
   }
 
   def fromJson(json: JsObject): Room = {

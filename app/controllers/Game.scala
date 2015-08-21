@@ -1,9 +1,9 @@
 package controllers
 
-import model.{GameEngine, Room}
+import model.Room
 import play.api.Logger
-import play.api.libs.json.{Json, JsObject}
-import play.api.mvc.{Result, Action, Controller}
+import play.api.libs.json.{JsObject, Json}
+import play.api.mvc.{Action, Controller, Result}
 
 import scala.util.Random
 
@@ -32,48 +32,54 @@ object Game extends Controller {
 
   def join(id: Long, password: String) = Action { implicit request =>
 
-    Logger.info(s"New user requesting to Join on Room #$id with password: $password")
-    val room = Room.load(id, password)
+    Logger.info(s"New user requesting to Join on Room id=$id, password=$password")
 
-    room match {
-      case Some(trulyRoom) => {
-        val player2: String = Random.alphanumeric.take(10).mkString
-        trulyRoom.player2 = player2
-        Ok("xxxx")
-      }
-      case None => BadGateway("Vish")
+    onValidRoom(id, password) { room =>
+      val player2: String = Random.alphanumeric.take(10).mkString
+      room.player2 = player2
+      room.save()
+      Logger.info(s"Player 2 successfully joined to game")
+      Ok(player2)
     }
   }
 
   def draw(id: Long, password: String) = Action { implicit request =>
-    Logger.info(s"Drawing game #$id")
-
+    Logger.info(s"drawing game request")
     onValidRoom(id, password) { room =>
       Ok(room.game.state)
     }
   }
 
-  private def onValidRoom(id: Long, password: String)(f: (Room) => Result): Result = {
-    Room.load(id, password) match {
-      case Some(room) => f(room)
-      case None => NotFound(":(")
+  def move(id: Long, password: String, playerKey: String, x: Int, y: Int) = Action { implicit request =>
+    Logger.info(s"player request move: id=$id, password=$password, playerKey=$playerKey, x=$x, y=$y")
+
+    onValidRoom(id, password) { room =>
+      if (room.validatePlayerTurn(playerKey)) {
+        if (room.game.executeMovement(x, y)) {
+          room.save()
+          Logger.info("movement executed with success")
+          Ok(Json.obj("status" -> "success", "game" -> room.game.state))
+        } else {
+          Logger.info("invalid movement")
+          Ok(Json.obj("status" -> "error", "reason" -> "invalid movement"))
+        }
+      } else {
+        Logger.info("Not your turn")
+
+        Forbidden("Not your turn")
+      }
     }
   }
 
-  def play(id: Long, password: String, playerKey: String, row: Int, col: Int) = Action { implicit request =>
-    Logger.info(s"Executing movement for playerKey:$playerKey")
+  private def onValidRoom(id: Long, password: String)(f: (Room) => Result): Result = {
 
-
-      onValidRoom(id, password) { room =>
-        if (room.game.executeMovement(row, col)) {
-          Ok("")
-        }
-
-
-
-        Ok("")
-      }
-      Ok("")
-
+    Room.load(id, password) match {
+      case Some(room) =>
+        Logger.info(s"Room load with success: id=$id, password=$password")
+        f(room)
+      case None =>
+        Logger.info(s"Cannot load room: id=$id, password=$password")
+        Forbidden(":(")
+    }
   }
 }
