@@ -12,5 +12,7 @@ Created to lear and experimenting new tecnologies, frameworks and funny things.
 
 #Running
 
+```bash
 activator run
+```
 
