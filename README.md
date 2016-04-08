@@ -1,9 +1,10 @@
 # awttt
 An Awesome Tic Tac Toe, RESTful* server created with Scala & Play Framework.
 
-Created to lear and experimenting new tecnologies, frameworks and funny things.
+Created to learn and try new tecnologies, frameworks and funny things.
 
-*RESTful, because we're learning. Fell free to make sugestion.
+*We're learning. Fell free to make sugestion if you know how to improve something.
+
 
 #Installing
 * [Scala](http://www.scala-lang.org)
