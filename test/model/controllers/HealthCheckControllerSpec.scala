@@ -1,14 +1,14 @@
 package model.controllers
 
+import controllers.HealthCheckController
 import play.api.test.{FakeRequest, PlaySpecification, WithApplication}
 
 class HealthCheckControllerSpec extends PlaySpecification {
 
   "GET /healthCheck" should {
-    "200 OK with body \"I'm alive!\"" in new WithApplication() {
+    "GET 200 OK with body \"I'm alive!\"" in new WithApplication() {
 
-      val request = FakeRequest(GET, "/healthCheck")
-      val response = route(request).get
+      val response = new HealthCheckController().healthCheck().apply(FakeRequest())
 
       status(response) must beEqualTo(OK)
       contentAsString(response) must beEqualTo("I'm alive!")

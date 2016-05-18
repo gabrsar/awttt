@@ -1,12 +1,19 @@
-name := "tictactoeserver"
+name := """AWTTT"""
 
-version := "1.0"
+version := "1.0-SNAPSHOT"
 
-lazy val `tictactoeserver` = (project in file(".")).enablePlugins(PlayJava)
+lazy val root = (project in file(".")).enablePlugins(PlayScala)
 
-scalaVersion := "2.11.1"
+scalaVersion := "2.11.7"
 
-libraryDependencies ++= Seq( javaJdbc , javaEbean , cache , javaWs )
+libraryDependencies ++= Seq(
+  jdbc,
+  cache,
+  ws,
+  "org.scalatestplus.play" %% "scalatestplus-play" % "1.5.1" % Test
+)
+
+libraryDependencies += specs2 % Test
 
 libraryDependencies += "com.github.scala-incubator.io" %% "scala-io-core" % "0.4.3"
 
@@ -14,5 +21,4 @@ libraryDependencies += "com.github.scala-incubator.io" %% "scala-io-file" % "0.4
 
 libraryDependencies += "javax.inject" % "javax.inject" % "1"
 
-
-unmanagedResourceDirectories in Test <+=  baseDirectory ( _ /"target/web/public/test" )  
+resolvers += "scalaz-bintray" at "http://dl.bintray.com/scalaz/releases"

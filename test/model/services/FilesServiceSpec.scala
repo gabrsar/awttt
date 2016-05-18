@@ -1,9 +1,11 @@
 package model.services
 
-import play.api.test.{PlaySpecification, WithApplication}
+import org.specs2.mutable._
+import play.api.test.WithApplication
 import services.FilesService
 
-class FilesServiceSpec extends PlaySpecification {
+
+class FilesServiceSpec extends Specification {
 
   "FilesService" should {
 
