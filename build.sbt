@@ -12,5 +12,7 @@ libraryDependencies += "com.github.scala-incubator.io" %% "scala-io-core" % "0.4
 
 libraryDependencies += "com.github.scala-incubator.io" %% "scala-io-file" % "0.4.3"
 
+libraryDependencies += "javax.inject" % "javax.inject" % "1"
+
 
 unmanagedResourceDirectories in Test <+=  baseDirectory ( _ /"target/web/public/test" )  
