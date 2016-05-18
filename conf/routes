@@ -6,7 +6,10 @@
 
 GET     /healthCheck                                @controllers.HealthCheckController.healthCheck()
 
+GET     /                                           @controllers.IndexController.index()
 
+
+GET     /                                           controllers.Game.index
 GET     /start/:password                            controllers.Game.start(password:String)
 GET     /join/:id/:password                         controllers.Game.join(id:Long, password:String)
 GET     /draw/:id/:password                         controllers.Game.draw(id:Long, password:String)
