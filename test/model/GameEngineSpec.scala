@@ -34,8 +34,6 @@ class GameEngineSpec extends Specification {
   }
   def testExecuteMovement() = {
 
-
-
     val game = Fabricator.game()
 
     "refuse to play with invalid coordinates" in {
