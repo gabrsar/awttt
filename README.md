@@ -1,3 +1,4 @@
+![Travis Status](https://travis-ci.org/gabrsar/awttt.svg?branch=master)
 # awttt
 An Awesome Tic Tac Toe, RESTful* server created with Scala & Play Framework.
 
