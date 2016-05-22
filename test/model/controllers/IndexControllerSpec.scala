@@ -1,6 +1,7 @@
 package model.controllers
 
 import com.google.common.net.MediaType
+import controllers.IndexController
 import play.api.test.{FakeRequest, PlaySpecification, WithApplication}
 import services.FilesService
 
@@ -12,11 +13,11 @@ class IndexControllerSpec extends PlaySpecification {
       val fs = new FilesService
       val expectedMessage = fs.loadAsString("public/messages/hello.txt")
 
-      val request = FakeRequest(GET,"/")
-      val response = route(request).get
+      val response = new IndexController(fs).index().apply(FakeRequest())
 
       status(response) must beEqualTo(OK)
-      contentType(response) must beEqualTo(MediaType.PLAIN_TEXT_UTF_8)
+      contentType(response).get must beEqualTo("text/plain")
+
       contentAsString(response) must beEqualTo(expectedMessage)
 
     }
