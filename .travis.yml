@@ -1,6 +1,5 @@
 # Grabbed from: https://github.com/GregTheRules/travis/blob/master/.travis.yml =)
 language: scala
-sudo: false
 scala:
     - 2.11.7
 jdk:
