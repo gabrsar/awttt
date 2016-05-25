@@ -1,7 +1,5 @@
-package model.controllers
+package controllers
 
-import com.google.common.net.MediaType
-import controllers.IndexController
 import play.api.test.{FakeRequest, PlaySpecification, WithApplication}
 import services.FilesService
 

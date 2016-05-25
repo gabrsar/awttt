@@ -1,4 +1,4 @@
-package model.controllers
+package controllers
 
 import controllers.HealthCheckController
 import play.api.test.{FakeRequest, PlaySpecification, WithApplication}
