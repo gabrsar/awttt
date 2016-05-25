@@ -1,8 +1,10 @@
+# awttt
+An Awesome Web Tic Tac Toe, RESTful* server created with Scala & Play Framework.
+
 [![Build Status](https://travis-ci.org/gabrsar/awttt.svg?branch=master)](https://travis-ci.org/gabrsar/awttt)
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/848a9c141153438aadb36f5da9e2cd9a)](https://www.codacy.com/app/gabriel-saraiva/awttt?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=gabrsar/awttt&amp;utm_campaign=Badge_Grade)
 
-# awttt
-An Awesome Web Tic Tac Toe, RESTful* server created with Scala & Play Framework.
+
 
 Created to learn and try new tecnologies, frameworks and funny things.
 
