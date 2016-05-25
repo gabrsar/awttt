@@ -4,7 +4,8 @@
 
 # Home page
 
-GET     /healthCheck                                @controllers.HealthCheckController.healthCheck()
 GET     /                                           @controllers.IndexController.index()
+GET     /healthCheck                                @controllers.HealthCheckController.healthCheck()
+GET     /help                                       @controllers.HelpController.index()
 
-GET     /assets/*file               controllers.Assets.versioned(path="/public", file: Asset)
+GET     /assets/*file                               controllers.Assets.versioned(path="/public", file: Asset)
