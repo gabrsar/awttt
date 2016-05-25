@@ -1,6 +1,6 @@
 [![Build Status](https://travis-ci.org/gabrsar/awttt.svg?branch=master)](https://travis-ci.org/gabrsar/awttt)
 # awttt
-An Awesome Tic Tac Toe, RESTful* server created with Scala & Play Framework.
+An Awesome Web Tic Tac Toe, RESTful* server created with Scala & Play Framework.
 
 Created to learn and try new tecnologies, frameworks and funny things.
 
