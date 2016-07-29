@@ -2,14 +2,14 @@
 
 How to use AWTTT - API Specification
 --------------------------------------------------------------------------------
-TODO #1: Generate this help with result of tests, in an automatic way.
-TODO #1: Idea from Pragmatic Programmer, F. Benevides / G. Amigo from 99Taxis =)
+
 - UTILS ------------------------------------------------------------------------
-GET / - Show an explanation of what is AWTTT
-GET /help - Show this help message
-GET /healthCheck - return an "I'm alive!" if server is healthy and running
+GET     / - Show an explanation of what is AWTTT
+GET     /help - Show this help message
+GET     /healthCheck - return an "I'm alive!" if server is healthy and running
+
 - GAMES (NOT IMPLEMENTED YET) --------------------------------------------------
-GET /games - List all games
-GET /games/:id - Get an specific game
-POST /games - Create a game and return it
+GET     /games - List all games
+GET     /games/:id - Get an specific game
+POST    /games - Create a game and return it
 --------------------------------------------------------------------------------
