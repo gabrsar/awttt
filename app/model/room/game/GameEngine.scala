@@ -1,4 +1,4 @@
-package model
+package model.room.game
 
 import play.api.libs.json.{JsObject, Json}
 

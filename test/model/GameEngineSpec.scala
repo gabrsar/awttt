@@ -1,6 +1,7 @@
 package model
 
 import model.helpers.Fabricator
+import model.room.game.GameEngine
 import org.specs2.mutable._
 
 

@@ -1,6 +1,6 @@
 package model.helpers
 
-import model.GameEngine
+import model.room.game.GameEngine
 
 import scala.util.Random
 

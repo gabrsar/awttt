@@ -1,16 +1,12 @@
-package model
+package model.room
 
-import java.util.concurrent.atomic.AtomicInteger
-
-import com.fasterxml.jackson.databind.JsonMappingException
+import model.room.game.GameEngine
 import org.joda.time.DateTime
 import play.api.Logger
 import play.api.libs.json.{JsObject, Json}
 
-import scalax.io._
-
 class Room(
-            val id: Long = Room.nextId(),
+            val id: Long,
             val password: String = "",
             val player1: String,
             var player2: String = "",
@@ -52,17 +48,6 @@ class Room(
     )
   }
 
-  def save() = {
-    val gameState = this.toJson.toString()
-
-    Logger.info(s"Saving room state='$gameState'")
-
-    val uuid = s"${Room.storePath}$id.game"
-    val gameFile: Seekable = Resource.fromFile(uuid)
-    gameFile.truncate(0)
-    gameFile.write(gameState)
-  }
-
   def validatePassword(idParam: Long, passwordParam: String) = {
     id == idParam && password == passwordParam
   }
@@ -70,30 +55,6 @@ class Room(
 }
 
 object Room {
-
-  private val storePath = "saved/"
-
-  def load(id: Long = 0, password: String): Option[Room] = {
-
-    val uuid = s"${Room.storePath}$id.game"
-    val roomString = Resource.fromFile(uuid).string(Codec.UTF8)
-
-    try {
-      val room = new Room(Json.parse(roomString).as[JsObject])
-      if (room.validatePassword(id, password)) {
-        Logger.info(s"Game loaded: id=$id, password=$password")
-        Some(room)
-      } else {
-        Logger.info(s"Cannot load game: invalid credentials id=$id, password=$password")
-        None
-      }
-    } catch {
-      case e: JsonMappingException =>
-        Logger.info(s"Cannot load game: id=$id, password=$password, exception=$e")
-        None
-    }
-
-  }
 
   def fromJson(json: JsObject): Room = {
 
@@ -107,12 +68,5 @@ object Room {
     new Room(id, password, player1, player2, game, createdAt)
 
   }
-
-  private val currentId = new AtomicInteger(0)
-
-  def nextId() = {
-    currentId.getAndIncrement()
-  }
-
 
 }
